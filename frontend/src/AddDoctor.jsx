@@ -11,7 +11,7 @@ function AddDoctor() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/api/doctors', {
+    axios.post('https://hospital-management-system-wwpo.onrender.com/api/doctors', {
       full_name: fullName,
       specialization: specialization,
       phone: phone,

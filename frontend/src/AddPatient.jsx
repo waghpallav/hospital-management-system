@@ -10,7 +10,7 @@ function AddPatient() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/api/patients', {
+    axios.post('https://hospital-management-system-wwpo.onrender.com/api/patients', {
       full_name: fullName,
       phone: phone,
       gender: gender,

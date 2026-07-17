@@ -10,12 +10,12 @@ function AddBill() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/patients').then((res) => setPatients(res.data));
+    axios.get('https://hospital-management-system-wwpo.onrender.com/api/patients').then((res) => setPatients(res.data));
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/api/bills', {
+    axios.post('https://hospital-management-system-wwpo.onrender.com/api/bills', {
       patient_id: patientId,
       description: description,
       amount: amount,

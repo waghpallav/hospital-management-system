@@ -13,13 +13,13 @@ function AddAppointment() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/patients').then((res) => setPatients(res.data));
-    axios.get('http://localhost:5000/api/doctors').then((res) => setDoctors(res.data));
+    axios.get('https://hospital-management-system-wwpo.onrender.com/api/patients').then((res) => setPatients(res.data));
+    axios.get('https://hospital-management-system-wwpo.onrender.com/api/doctors').then((res) => setDoctors(res.data));
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/api/appointments', {
+    axios.post('https://hospital-management-system-wwpo.onrender.com/api/appointments', {
       patient_id: patientId,
       doctor_id: doctorId,
       appointment_date: date,

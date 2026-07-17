@@ -5,7 +5,7 @@ function RecordsList() {
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/records')
+    axios.get('https://hospital-management-system-wwpo.onrender.com/api/records')
       .then((res) => setRecords(res.data));
   }, []);
 

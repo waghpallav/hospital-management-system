@@ -5,7 +5,7 @@ function BillsList() {
   const [bills, setBills] = useState([]);
 
   const loadBills = () => {
-    axios.get('http://localhost:5000/api/bills')
+    axios.get('https://hospital-management-system-wwpo.onrender.com/api/bills')
       .then((res) => setBills(res.data));
   };
 
@@ -14,7 +14,7 @@ function BillsList() {
   }, []);
 
   const markAsPaid = (id) => {
-    axios.put(`http://localhost:5000/api/bills/${id}/pay`)
+    axios.put(`https://hospital-management-system-wwpo.onrender.com/api/bills/${id}/pay`)
       .then(() => {
         loadBills();
       });

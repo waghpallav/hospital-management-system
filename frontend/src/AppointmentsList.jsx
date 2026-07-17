@@ -5,7 +5,7 @@ function AppointmentsList() {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/appointments')
+    axios.get('https://hospital-management-system-wwpo.onrender.com/api/appointments')
       .then((res) => setAppointments(res.data));
   }, []);
 

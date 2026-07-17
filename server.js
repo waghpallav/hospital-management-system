@@ -113,4 +113,4 @@ app.put('/api/bills/:id/pay', async (req, res) => {
   res.json(result.rows[0]);
 });
 
-app.listen(5000, () => console.log('Server running on http://localhost:5000'));
+app.listen(5000, () => console.log('Server running on https://hospital-management-system-wwpo.onrender.com'));

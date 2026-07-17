@@ -5,7 +5,7 @@ function DoctorsList() {
   const [doctors, setDoctors] = useState([]);
 
   const loadDoctors = () => {
-    axios.get('http://localhost:5000/api/doctors')
+    axios.get('https://hospital-management-system-wwpo.onrender.com/api/doctors')
       .then((res) => setDoctors(res.data));
   };
 
@@ -15,7 +15,7 @@ function DoctorsList() {
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this doctor?')) {
-      axios.delete(`http://localhost:5000/api/doctors/${id}`)
+      axios.delete(`https://hospital-management-system-wwpo.onrender.com/api/doctors/${id}`)
         .then(() => {
           loadDoctors();
         });
