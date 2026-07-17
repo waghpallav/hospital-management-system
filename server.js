@@ -7,13 +7,9 @@ app.use(cors());
 app.use(express.json());
 
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'hims_db',
-  password: 'pallavi16',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_4VkI2LWQZcKh@ep-late-fire-awgaiu2v-pooler.c-12.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
+  ssl: { rejectUnauthorized: false },
 });
-
 app.get('/api/patients', async (req, res) => {
   const result = await pool.query('SELECT * FROM patients ORDER BY patient_id DESC');
   res.json(result.rows);
