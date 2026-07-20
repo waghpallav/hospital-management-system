@@ -14,7 +14,50 @@ app.get('/api/patients', async (req, res) => {
   const result = await pool.query('SELECT * FROM patients ORDER BY patient_id DESC');
   res.json(result.rows);
 });
+// आजच्या तारखेचा पुढचा token number काढणारं function
+async function getNextToken() {
+  const result = await pool.query(
+    `SELECT COALESCE(MAX(token_number), 0) + 1 AS next_token
+     FROM opd_visits WHERE visit_date = CURRENT_DATE`
+  );
+  return result.rows[0].next_token;
+}
 
+// आजच्या सगळ्या OPD visits ची यादी (रांग) — नाव सह
+app.get('/api/opd', async (req, res) => {
+  const result = await pool.query(`
+    SELECT o.opd_id, o.token_number, o.visit_type, o.status, o.consultation_fee,
+           p.full_name AS patient_name, p.phone, d.full_name AS doctor_name
+    FROM opd_visits o
+    JOIN patients p ON o.patient_id = p.patient_id
+    LEFT JOIN doctors d ON o.doctor_id = d.doctor_id
+    WHERE o.visit_date = CURRENT_DATE
+    ORDER BY o.token_number
+  `);
+  res.json(result.rows);
+});
+
+// नवीन OPD visit नोंदवणे — token आपोआप मिळतो
+app.post('/api/opd', async (req, res) => {
+  const { patient_id, doctor_id, visit_type, consultation_fee } = req.body;
+  const token_number = await getNextToken();
+  const result = await pool.query(
+    `INSERT INTO opd_visits (patient_id, doctor_id, token_number, visit_type, consultation_fee)
+     VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+    [patient_id, doctor_id || null, token_number, visit_type || 'New', consultation_fee || 0]
+  );
+  res.json(result.rows[0]);
+});
+
+// Status बदलणे (Waiting → In Consultation → Completed)
+app.put('/api/opd/:id/status', async (req, res) => {
+  const { status } = req.body;
+  const result = await pool.query(
+    'UPDATE opd_visits SET status = $1 WHERE opd_id = $2 RETURNING *',
+    [status, req.params.id]
+  );
+  res.json(result.rows[0]);
+});
 app.post('/api/patients', async (req, res) => {
   app.delete('/api/patients/:id', async (req, res) => {
   await pool.query('DELETE FROM patients WHERE patient_id = $1', [req.params.id]);
