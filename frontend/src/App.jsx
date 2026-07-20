@@ -13,6 +13,8 @@ import AddBill from './AddBill';
 import BillsList from './BillsList';
 import AddOPDVisit from './AddOPDVisit';
 import OPDQueue from './OPDQueue';
+import AddIPDAdmission from './AddIPDAdmission';
+import IPDList from './IPDList';
 
 const navItem = {
   color: '#e8f2f0',
@@ -35,7 +37,7 @@ function App() {
         height: '54px',
       }}>
         <Link to="/" style={{ color: 'white', fontSize: '17px', fontWeight: 'bold', textDecoration: 'none', marginRight: '30px' }}>
-          🏥 Aarogya HIMS
+          🏥 HIMS
         </Link>
 
         <nav style={{ display: 'flex', gap: '4px', flex: 1 }}>
@@ -46,6 +48,7 @@ function App() {
           <Link to="/records-list" style={navItem}>Records</Link>
           <Link to="/bills-list" style={navItem}>Billing</Link>
           <Link to="/opd-queue" style={navItem}>OPD</Link>
+          <Link to="/ipd-list" style={navItem}>IPD</Link>
         </nav>
       </header>
 
@@ -65,6 +68,8 @@ function App() {
             <Route path="/bills-list" element={<BillsList />} />
             <Route path="/add-opd" element={<AddOPDVisit />} />
             <Route path="/opd-queue" element={<OPDQueue />} />
+            <Route path="/add-ipd" element={<AddIPDAdmission />} />
+            <Route path="/ipd-list" element={<IPDList />} />
           </Routes>
         </main>
         <QuickLinks />

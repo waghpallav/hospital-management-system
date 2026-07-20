@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const links = [
@@ -7,9 +8,22 @@ const links = [
   { icon: '📋', label: 'Add Record', to: '/add-record' },
   { icon: '💰', label: 'New Bill', to: '/add-bill' },
   { icon: '🏥', label: 'OPD Check-in', to: '/add-opd' },
+  { icon: '🛏️', label: 'Admit Patient', to: '/add-ipd' },
 ];
 
+const VISIBLE_COUNT = 5;
+
 function QuickLinks() {
+  const [showAll, setShowAll] = useState(false);
+  const visibleLinks = showAll ? links : links.slice(0, VISIBLE_COUNT);
+  const hasMore = links.length > VISIBLE_COUNT;
+
+  const linkItemStyle = {
+    display: 'flex', alignItems: 'center', gap: '10px',
+    padding: '9px 8px', borderRadius: '6px', textDecoration: 'none',
+    color: '#16302c', fontSize: '13px', marginBottom: '4px',
+  };
+
   return (
     <aside style={{
       width: '220px',
@@ -24,16 +38,26 @@ function QuickLinks() {
       }}>
         Quick Links
       </div>
-      {links.map((l) => (
-        <Link key={l.label} to={l.to} style={{
-          display: 'flex', alignItems: 'center', gap: '10px',
-          padding: '9px 8px', borderRadius: '6px', textDecoration: 'none',
-          color: '#16302c', fontSize: '13px', marginBottom: '4px',
-        }}>
+
+      {visibleLinks.map((l) => (
+        <Link key={l.label} to={l.to} style={linkItemStyle}>
           <span style={{ fontSize: '18px' }}>{l.icon}</span>
           {l.label}
         </Link>
       ))}
+
+      {hasMore && (
+        <button
+          onClick={() => setShowAll(!showAll)}
+          style={{
+            background: 'none', border: 'none', color: '#2f7a6d',
+            fontSize: '12px', fontWeight: 'bold', cursor: 'pointer',
+            padding: '9px 8px', marginTop: '4px',
+          }}
+        >
+          {showAll ? 'See Less ▴' : `See More (${links.length - VISIBLE_COUNT}) ▾`}
+        </button>
+      )}
     </aside>
   );
 }

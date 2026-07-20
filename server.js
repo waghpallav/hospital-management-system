@@ -155,5 +155,40 @@ app.put('/api/bills/:id/pay', async (req, res) => {
   );
   res.json(result.rows[0]);
 });
+// सगळे admitted पेशंट्स (सध्या दाखल असलेले) — नाव सह
+app.get('/api/ipd', async (req, res) => {
+  const result = await pool.query(`
+    SELECT i.admission_id, i.ward_type, i.bed_number, i.admission_date,
+           i.admission_reason, i.diagnosis, i.discharge_date, i.status,
+           p.full_name AS patient_name, p.phone, d.full_name AS doctor_name
+    FROM ipd_admissions i
+    JOIN patients p ON i.patient_id = p.patient_id
+    LEFT JOIN doctors d ON i.doctor_id = d.doctor_id
+    ORDER BY i.admission_date DESC
+  `);
+  res.json(result.rows);
+});
+
+// नवीन पेशंट Admit करणे
+app.post('/api/ipd', async (req, res) => {
+  const { patient_id, doctor_id, ward_type, bed_number, admission_reason, diagnosis } = req.body;
+  const result = await pool.query(
+    `INSERT INTO ipd_admissions (patient_id, doctor_id, ward_type, bed_number, admission_reason, diagnosis)
+     VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+    [patient_id, doctor_id || null, ward_type, bed_number, admission_reason, diagnosis]
+  );
+  res.json(result.rows[0]);
+});
+
+// पेशंट Discharge करणे
+app.put('/api/ipd/:id/discharge', async (req, res) => {
+  const result = await pool.query(
+    `UPDATE ipd_admissions
+     SET status = 'Discharged', discharge_date = NOW()
+     WHERE admission_id = $1 RETURNING *`,
+    [req.params.id]
+  );
+  res.json(result.rows[0]);
+});
 
 app.listen(5000, () => console.log('Server running on https://hospital-management-system-wwpo.onrender.com'));

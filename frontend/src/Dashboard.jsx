@@ -7,6 +7,7 @@ const modules = [
   { name: 'Medical Records', icon: '📋', color: '#7a5ca8', add: '/add-record', list: '/records-list' },
   { name: 'Billing', icon: '💰', color: '#a8453a', add: '/add-bill', list: '/bills-list' },
   { name: 'OPD', icon: '🏥', color: '#2f7a6d', add: '/add-opd', list: '/opd-queue' },
+  { name: 'IPD (Admissions)', icon: '🛏️', color: '#3c7a9c', add: '/add-ipd', list: '/ipd-list' },
 ];
 
 function Dashboard() {
